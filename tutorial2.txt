@@ -1,0 +1,69 @@
+LATIHAN PROJECT VIRAL
+1. a. tidak terjadi compile error
+b. tidak bisa keluar outputnya, terjadi whitelabel error page dimana tidak ada mapping yang cocok dengan viral2jari
+c. kegunaan RequestMapping("/viral") adalah untuk mengakses url-path method yang kita buat sebelumnya, di dalam method ini kita akan melemparkan model yang telah kita buat untuk kemudian ditampilkan di jsp (web page kita)
+
+2. a. tidak terjadi compile error
+b. tidak terjadi masalah, karena viral() tersebut hanya sebuah nama method yang kita berikan, kita tidak mengubah isi dari method, kecuali kita mengganti return "vira"; menjadi return "viral2jari";
+
+3. a. tidak terjadi compile error
+b. terjadi whitelable error page dimana method index() tidak menemukan mapping "vira2jari" sehingga tidak ada output yang keluar
+c. kegunaan return type adalah menampilkan/mengembalikan isi dari RequestMapping yang merujuk kepada file viral 
+
+LATIHAN REQUEST PARAMETER
+1. karena pada bagian thymeleaf namespace akan terideklarasi untuk semua th:* attribute seperti <p th:text="${name}...> lalu th:text attribute juga akan mengevaluasi value expression dan menetapkan hasil evaluasi ini sebagai body of the tag, maka menggantikan teks "In My Feeling"
+2. pada browser menampilkan 'kiki do you love me?' 'are you kidding?' dan tidak terjadi error karena
+3. a) pada browser terjadi error whitelabel error page dan required String parameter 'name' is not present
+b) pada browser menampilkan 'null do you love me?' 'are you kidding?' and not error because the required element of @RequestParam defines whether the parameter value is required or not.
+c) pada browser menampilkan 'kiki do you love me?' 'are you kidding?" and not error because The default value of the @RequestParam is used to provide a default value when the request param is not provided or is empty.
+
+PATH VARIABLE
+1.  pada browser terjadi error whitelabel error page dan required String parameter 'name' is not present, karena pathVariable yang dibutuhkan tidak diinput oleh user (harusnya diinput setelah tanda / kedua).
+2. pada browser terjadi error whitelabel error page, terjadi ambiguos handler methods yang memapping for HTTP path 'http://loclhost:8080/challenge/'
+3. tidak terjadi error, parameter name akan diinput ke template html dan menampilkan "kiki do you love me?" "are you riding?"
+
+LATIHAN
+A. VIRAL GENERATOR
+@RequestMapping ("/generator")
+	public String Generator (
+			@RequestParam(value = "a", required = false, defaultValue = "0") String a, @RequestParam(value = "b", required = false, defaultValue = "0") String b, 
+			Model model) {
+		String result = "";
+		if (a.equalsIgnoreCase("0") || a.equalsIgnoreCase("1")) {
+			result += "hm";
+		}else if (b.equalsIgnoreCase("0") || b.equalsIgnoreCase("1")){
+			result += "hm";
+		}else {
+			result += "h";
+			for (int i = 0; i < Integer.parseInt(a); i++) {
+				result += "m";
+			}
+		}
+		
+		if (Integer.parseInt(b) > 1) {
+			String newResult = "";
+			for (int i = 0; i < Integer.parseInt(b); i++) {
+				newResult += result;
+				newResult += " ";
+			}
+			result = newResult;
+		}
+		
+		model.addAttribute("result", result);
+		model.addAttribute("a", a);
+		model.addAttribute("b", b);
+		return "generator";
+	}
+
+generator.html
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<title>Viral Generator</title>
+	</head>
+	<body>
+		<h1>Viral Generator</h1>
+		<p th:text=" 'a=' + ${a} + ', b=' + ${b}"></p>
+		<p th:text="${result}"></p>
+	</body>
+</html>
